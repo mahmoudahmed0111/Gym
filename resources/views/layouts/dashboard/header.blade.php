@@ -1,0 +1,169 @@
+<nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+    id="layout-navbar">
+    <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+            <i class="bx bx-menu bx-sm"></i>
+        </a>
+    </div>
+
+    <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+        <!-- Search -->
+        <h3  class="mb-0 "> <i class='@yield('header__icon') fs-2'></i> @yield('header__title')</h3>
+
+
+
+
+        <!-- /Search -->
+
+        <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Lang -->
+            @php
+                $lang = config('app.locale');
+            @endphp
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{{ $lang != 'ar' ? asset('assets/img/us.svg') : asset('assets/img/sa.svg') }}"
+                        alt="" class="img-fluid rounded-1 me-2" width="20" height="20">
+                    <p class="mb-0">{{ $lang != 'ar' ? __('home.en') : __('home.ar') }}</p>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li>
+                        <a class="dropdown-item p-2 d-flex align-items-center" href="{{ route('language', 'ar') }}">
+                            <img src="{{ asset('assets/img/sa.svg') }}" alt="" class="img-fluid rounded-1 me-2"
+                                width="20" height="20">
+                            <p class="mb-0">{{ __('home.ar') }}</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item p-2 d-flex align-items-center" href="{{ route('language', 'en') }}">
+                            <img src="{{ asset('assets/img/us.svg') }}" alt="" class="img-fluid rounded-1 me-2"
+                                width="20" height="20">
+                            <p class="mb-0">{{ __('home.en') }}</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <!-- currency -->
+            @php
+                $currency = session('currency', 'SAR');
+            @endphp
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="currencyDropdown"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-money-bill me-2" style="color: #2c67c1"></i>
+                    <p class="mb-0">{{ $currency == __('home.$') ? __('home.$') : __('home.sar') }}</p>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="currencyDropdown">
+                    <li>
+                        <a class="dropdown-item p-2 d-flex align-items-center">
+                            {{-- href="{{ route('currency', 'SAR') }}" --}}
+                            <i class="fa-solid fa-money-bill me-2"></i>
+                            <p class="mb-0">{{ __('home.sar') }}</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item p-2 d-flex align-items-center">
+                            {{-- href="{{ route('currency', 'USD') }}" --}}
+                            <i class="fa-solid fa-money-bill me-2"></i>
+                            <p class="mb-0">{{ __('home.$') }}</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- notifications -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="notificationDropdown"
+                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i  class="fa-solid fa-bell me-2" style="color: #2c67c1"></i>
+                    <p class="mb-0">{{ __('home.notifications') }}</p>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown">
+                    {{-- @forelse($notifications as $notification)
+                        <li>
+                            <a class="dropdown-item p-2 d-flex align-items-center"
+                                href="{{ route('notification.show', $notification->id) }}">
+                                <i class="fa-solid fa-bell me-2"></i>
+                                <p class="mb-0">{{ $notification->message }}</p>
+                            </a>
+                        </li>
+                    @empty --}}
+                    <li>
+                        <a class="dropdown-item p-2 d-flex align-items-center" href="#">
+                            <i class="fa-solid fa-bell me-2"></i>
+                            <p class="mb-0">{{ __('home.no_notifications') }}</p>
+                        </a>
+                    </li>
+                    {{-- @endforelse --}}
+                </ul>
+            </li>
+
+
+            <!-- User -->
+            <li class="nav-item navbar-dropdown dropdown-user dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <div class="avatar avatar-online">
+                        <img src="{{ image_url(auth('admin')->user()->img) }}" alt
+                            class="w-px-40 h-auto rounded-circle" />
+                    </div>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a class="dropdown-item" href="#">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar avatar-online">
+                                        <img src="{{ image_url(auth('admin')->user()->img) }}" alt
+                                            class="w-px-40 h-auto rounded-circle" />
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <span class="fw-semibold d-block">{{ auth('admin')->user()->name }}</span>
+                                    <small class="text-muted">Admin</small>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('settings.index') }}">
+                            <i class="bx bx-user me-2"></i>
+                            <span class="align-middle">My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('settings.index') }}">
+                            <i class="bx bx-cog me-2"></i>
+                            <span class="align-middle">Settings</span>
+                        </a>
+                    </li>
+                    {{-- <li>
+                        <a class="dropdown-item" href="#">
+                            <span class="d-flex align-items-center align-middle">
+                                <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
+                                <span class="flex-grow-1 align-middle">Billing</span>
+                                <span
+                                    class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
+                            </span>
+                        </a>
+                    </li> --}}
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('logout') }}">
+                            <i class="bx bx-power-off me-2"></i>
+                            <span class="align-middle">Log Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!--/ User -->
+
+        </ul>
+    </div>
+</nav>
